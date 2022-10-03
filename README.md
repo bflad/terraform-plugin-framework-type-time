@@ -67,10 +67,10 @@ Similar to other value types, use the `IsNull()` and `IsUnknown()` methods to ch
 
 Create a `timetypes.RFC3339` by calling one of these functions:
 
-- `NullRFC3339() RFC3339`: creates a `null` value.
-- `UnknownRFC3339() Value`: creates an unknown value.
+- `RFC3339Null() RFC3339`: creates a `null` value.
 - `RFC3339String(string, path.Path) (Value, diag.Diagnostics)`: creates a known value using the given `string` or returns validation errors if `string` is not in the expected RFC 3339 format.
 - `RFC3339Time(time.Time) Value` creates a known value using the given `time.Time`.
+- `RFC3339Unknown() Value`: creates an unknown value.
 
 ### Adding the Dependency
 

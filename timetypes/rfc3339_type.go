@@ -102,5 +102,5 @@ func (t RFC3339Type) ValueFromTerraform(_ context.Context, terraformValue tftype
 
 // ValueType returns the associated attr.Value.
 func (t RFC3339Type) ValueType(_ context.Context) attr.Value {
-	return RFC3339Value{}
+	return RFC3339{}
 }

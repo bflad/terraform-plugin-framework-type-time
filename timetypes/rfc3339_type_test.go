@@ -337,7 +337,7 @@ func TestRFC3339TypeValueType(t *testing.T) {
 	}{
 		"any": {
 			typ:      timetypes.RFC3339Type{},
-			expected: timetypes.RFC3339Value{},
+			expected: timetypes.RFC3339{},
 		},
 	}
 

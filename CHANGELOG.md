@@ -1,3 +1,9 @@
+# 0.2.1 (October 3, 2022)
+
+BUG FIXES:
+
+* Renamed `RFC3339Value` to `RFC3339` to match previous changelog
+
 # 0.2.0 (October 3, 2022)
 
 BREAKING CHANGES:

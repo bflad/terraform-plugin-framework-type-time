@@ -17,7 +17,7 @@ func TestRFC3339Equal(t *testing.T) {
 	t.Parallel()
 
 	testCases := map[string]struct {
-		value    timetypes.RFC3339Value
+		value    timetypes.RFC3339
 		other    attr.Value
 		expected bool
 	}{
@@ -102,7 +102,7 @@ func TestRFC3339IsNull(t *testing.T) {
 	t.Parallel()
 
 	testCases := map[string]struct {
-		value    timetypes.RFC3339Value
+		value    timetypes.RFC3339
 		expected bool
 	}{
 		"null": {
@@ -138,7 +138,7 @@ func TestRFC3339IsUnknown(t *testing.T) {
 	t.Parallel()
 
 	testCases := map[string]struct {
-		value    timetypes.RFC3339Value
+		value    timetypes.RFC3339
 		expected bool
 	}{
 		"null": {
@@ -174,7 +174,7 @@ func TestRFC3339String(t *testing.T) {
 	t.Parallel()
 
 	testCases := map[string]struct {
-		value    timetypes.RFC3339Value
+		value    timetypes.RFC3339
 		expected string
 	}{
 		"null": {
@@ -218,7 +218,7 @@ func TestRFC3339Time(t *testing.T) {
 	t.Parallel()
 
 	testCases := map[string]struct {
-		value    timetypes.RFC3339Value
+		value    timetypes.RFC3339
 		expected time.Time
 	}{
 		"null": {
@@ -262,7 +262,7 @@ func TestRFC3339ToTerraformValue(t *testing.T) {
 	t.Parallel()
 
 	testCases := map[string]struct {
-		value         timetypes.RFC3339Value
+		value         timetypes.RFC3339
 		expected      tftypes.Value
 		expectedError error
 	}{
@@ -321,7 +321,7 @@ func TestRFC3339Type(t *testing.T) {
 	t.Parallel()
 
 	testCases := map[string]struct {
-		value    timetypes.RFC3339Value
+		value    timetypes.RFC3339
 		expected attr.Type
 	}{
 		"any": {
