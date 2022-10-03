@@ -1,83 +1,84 @@
-package rfc3339type_test
+package timetypes_test
 
 import (
 	"context"
+	"strings"
 	"testing"
 	"time"
 
-	"github.com/bflad/terraform-plugin-framework-type-rfc3339/rfc3339type"
+	"github.com/bflad/terraform-plugin-framework-type-time/timetypes"
 	"github.com/google/go-cmp/cmp"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 )
 
-func TestValueEqual(t *testing.T) {
+func TestRFC3339Equal(t *testing.T) {
 	t.Parallel()
 
 	testCases := map[string]struct {
-		value    rfc3339type.Value
+		value    timetypes.RFC3339
 		other    attr.Value
 		expected bool
 	}{
 		"nil": {
-			value:    rfc3339type.NullValue(),
+			value:    timetypes.NullRFC3339(),
 			other:    nil,
 			expected: false,
 		},
-		"not-rfc3339type.Value": {
-			value:    rfc3339type.TimeValue(time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)),
+		"not-timetypes.RFC3339": {
+			value:    timetypes.RFC3339Time(time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)),
 			other:    types.String{Value: "2006-01-02T15:04:05Z"},
 			expected: false,
 		},
 		"null-null": {
-			value:    rfc3339type.NullValue(),
-			other:    rfc3339type.NullValue(),
+			value:    timetypes.NullRFC3339(),
+			other:    timetypes.NullRFC3339(),
 			expected: true,
 		},
 		"null-unknown": {
-			value:    rfc3339type.NullValue(),
-			other:    rfc3339type.UnknownValue(),
+			value:    timetypes.NullRFC3339(),
+			other:    timetypes.UnknownRFC3339(),
 			expected: false,
 		},
 		"null-value": {
-			value:    rfc3339type.NullValue(),
-			other:    rfc3339type.TimeValue(time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)),
+			value:    timetypes.NullRFC3339(),
+			other:    timetypes.RFC3339Time(time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)),
 			expected: false,
 		},
 		"unknown-null": {
-			value:    rfc3339type.UnknownValue(),
-			other:    rfc3339type.NullValue(),
+			value:    timetypes.UnknownRFC3339(),
+			other:    timetypes.NullRFC3339(),
 			expected: false,
 		},
 		"unknown-unknown": {
-			value:    rfc3339type.UnknownValue(),
-			other:    rfc3339type.UnknownValue(),
+			value:    timetypes.UnknownRFC3339(),
+			other:    timetypes.UnknownRFC3339(),
 			expected: true,
 		},
 		"unknown-value": {
-			value:    rfc3339type.UnknownValue(),
-			other:    rfc3339type.TimeValue(time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)),
+			value:    timetypes.UnknownRFC3339(),
+			other:    timetypes.RFC3339Time(time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)),
 			expected: false,
 		},
 		"value-null": {
-			value:    rfc3339type.TimeValue(time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)),
-			other:    rfc3339type.NullValue(),
+			value:    timetypes.RFC3339Time(time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)),
+			other:    timetypes.NullRFC3339(),
 			expected: false,
 		},
 		"value-unknown": {
-			value:    rfc3339type.TimeValue(time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)),
-			other:    rfc3339type.UnknownValue(),
+			value:    timetypes.RFC3339Time(time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)),
+			other:    timetypes.UnknownRFC3339(),
 			expected: false,
 		},
 		"value-value-different": {
-			value:    rfc3339type.TimeValue(time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)),
-			other:    rfc3339type.TimeValue(time.Date(2007, 2, 3, 16, 5, 6, 1, time.UTC)),
+			value:    timetypes.RFC3339Time(time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)),
+			other:    timetypes.RFC3339Time(time.Date(2007, 2, 3, 16, 5, 6, 1, time.UTC)),
 			expected: false,
 		},
 		"value-value-equal": {
-			value:    rfc3339type.TimeValue(time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)),
-			other:    rfc3339type.TimeValue(time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)),
+			value:    timetypes.RFC3339Time(time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)),
+			other:    timetypes.RFC3339Time(time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)),
 			expected: true,
 		},
 	}
@@ -97,23 +98,23 @@ func TestValueEqual(t *testing.T) {
 	}
 }
 
-func TestValueIsNull(t *testing.T) {
+func TestRFC3339IsNull(t *testing.T) {
 	t.Parallel()
 
 	testCases := map[string]struct {
-		value    rfc3339type.Value
+		value    timetypes.RFC3339
 		expected bool
 	}{
 		"null": {
-			value:    rfc3339type.NullValue(),
+			value:    timetypes.NullRFC3339(),
 			expected: true,
 		},
 		"unknown": {
-			value:    rfc3339type.UnknownValue(),
+			value:    timetypes.UnknownRFC3339(),
 			expected: false,
 		},
 		"value": {
-			value:    rfc3339type.TimeValue(time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)),
+			value:    timetypes.RFC3339Time(time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)),
 			expected: false,
 		},
 	}
@@ -133,23 +134,23 @@ func TestValueIsNull(t *testing.T) {
 	}
 }
 
-func TestValueIsUnknown(t *testing.T) {
+func TestRFC3339IsUnknown(t *testing.T) {
 	t.Parallel()
 
 	testCases := map[string]struct {
-		value    rfc3339type.Value
+		value    timetypes.RFC3339
 		expected bool
 	}{
 		"null": {
-			value:    rfc3339type.NullValue(),
+			value:    timetypes.NullRFC3339(),
 			expected: false,
 		},
 		"unknown": {
-			value:    rfc3339type.UnknownValue(),
+			value:    timetypes.UnknownRFC3339(),
 			expected: true,
 		},
 		"value": {
-			value:    rfc3339type.TimeValue(time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)),
+			value:    timetypes.RFC3339Time(time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)),
 			expected: false,
 		},
 	}
@@ -169,31 +170,31 @@ func TestValueIsUnknown(t *testing.T) {
 	}
 }
 
-func TestValueString(t *testing.T) {
+func TestRFC3339String(t *testing.T) {
 	t.Parallel()
 
 	testCases := map[string]struct {
-		value    rfc3339type.Value
+		value    timetypes.RFC3339
 		expected string
 	}{
 		"null": {
-			value:    rfc3339type.NullValue(),
+			value:    timetypes.NullRFC3339(),
 			expected: "<null>",
 		},
 		"unknown": {
-			value:    rfc3339type.UnknownValue(),
+			value:    timetypes.UnknownRFC3339(),
 			expected: "<unknown>",
 		},
 		"value-offset-negative": {
-			value:    rfc3339type.TimeValue(time.Date(2006, 1, 2, 15, 4, 5, 0, time.FixedZone("", -7*60*60))),
+			value:    timetypes.RFC3339Time(time.Date(2006, 1, 2, 15, 4, 5, 0, time.FixedZone("", -7*60*60))),
 			expected: "\"2006-01-02T15:04:05-07:00\"",
 		},
 		"value-offset-positive": {
-			value:    rfc3339type.TimeValue(time.Date(2006, 1, 2, 15, 4, 5, 0, time.FixedZone("", 7*60*60))),
+			value:    timetypes.RFC3339Time(time.Date(2006, 1, 2, 15, 4, 5, 0, time.FixedZone("", 7*60*60))),
 			expected: "\"2006-01-02T15:04:05+07:00\"",
 		},
 		"value-z": {
-			value:    rfc3339type.TimeValue(time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)),
+			value:    timetypes.RFC3339Time(time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)),
 			expected: "\"2006-01-02T15:04:05Z\"",
 		},
 	}
@@ -213,31 +214,31 @@ func TestValueString(t *testing.T) {
 	}
 }
 
-func TestValueTime(t *testing.T) {
+func TestRFC3339Time(t *testing.T) {
 	t.Parallel()
 
 	testCases := map[string]struct {
-		value    rfc3339type.Value
+		value    timetypes.RFC3339
 		expected time.Time
 	}{
 		"null": {
-			value:    rfc3339type.NullValue(),
+			value:    timetypes.NullRFC3339(),
 			expected: time.Date(1, 1, 1, 0, 0, 0, 0, time.UTC),
 		},
 		"unknown": {
-			value:    rfc3339type.UnknownValue(),
+			value:    timetypes.UnknownRFC3339(),
 			expected: time.Date(1, 1, 1, 0, 0, 0, 0, time.UTC),
 		},
 		"value-offset-negative": {
-			value:    rfc3339type.TimeValue(time.Date(2006, 1, 2, 15, 4, 5, 0, time.FixedZone("", -7*60*60))),
+			value:    timetypes.RFC3339Time(time.Date(2006, 1, 2, 15, 4, 5, 0, time.FixedZone("", -7*60*60))),
 			expected: time.Date(2006, 1, 2, 15, 4, 5, 0, time.FixedZone("", -7*60*60)),
 		},
 		"value-offset-positive": {
-			value:    rfc3339type.TimeValue(time.Date(2006, 1, 2, 15, 4, 5, 0, time.FixedZone("", 7*60*60))),
+			value:    timetypes.RFC3339Time(time.Date(2006, 1, 2, 15, 4, 5, 0, time.FixedZone("", 7*60*60))),
 			expected: time.Date(2006, 1, 2, 15, 4, 5, 0, time.FixedZone("", 7*60*60)),
 		},
 		"value-z": {
-			value:    rfc3339type.TimeValue(time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)),
+			value:    timetypes.RFC3339Time(time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)),
 			expected: time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC),
 		},
 	}
@@ -257,31 +258,32 @@ func TestValueTime(t *testing.T) {
 	}
 }
 
-func TestValueToTerraformValue(t *testing.T) {
+func TestRFC3339ToTerraformValue(t *testing.T) {
 	t.Parallel()
 
 	testCases := map[string]struct {
-		value    rfc3339type.Value
-		expected tftypes.Value
+		value         timetypes.RFC3339
+		expected      tftypes.Value
+		expectedError error
 	}{
 		"null": {
-			value:    rfc3339type.NullValue(),
+			value:    timetypes.NullRFC3339(),
 			expected: tftypes.NewValue(tftypes.String, nil),
 		},
 		"unknown": {
-			value:    rfc3339type.UnknownValue(),
+			value:    timetypes.UnknownRFC3339(),
 			expected: tftypes.NewValue(tftypes.String, tftypes.UnknownValue),
 		},
 		"value-offset-negative": {
-			value:    rfc3339type.TimeValue(time.Date(2006, 1, 2, 15, 4, 5, 0, time.FixedZone("", -7*60*60))),
+			value:    timetypes.RFC3339Time(time.Date(2006, 1, 2, 15, 4, 5, 0, time.FixedZone("", -7*60*60))),
 			expected: tftypes.NewValue(tftypes.String, "2006-01-02T15:04:05-07:00"),
 		},
 		"value-offset-positive": {
-			value:    rfc3339type.TimeValue(time.Date(2006, 1, 2, 15, 4, 5, 0, time.FixedZone("", 7*60*60))),
+			value:    timetypes.RFC3339Time(time.Date(2006, 1, 2, 15, 4, 5, 0, time.FixedZone("", 7*60*60))),
 			expected: tftypes.NewValue(tftypes.String, "2006-01-02T15:04:05+07:00"),
 		},
 		"value-z": {
-			value:    rfc3339type.TimeValue(time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)),
+			value:    timetypes.RFC3339Time(time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)),
 			expected: tftypes.NewValue(tftypes.String, "2006-01-02T15:04:05Z"),
 		},
 	}
@@ -292,7 +294,21 @@ func TestValueToTerraformValue(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 
-			got := testCase.value.Type(context.Background())
+			got, err := testCase.value.ToTerraformValue(context.Background())
+
+			if err != nil {
+				if testCase.expectedError == nil {
+					t.Fatalf("expected no error, got: %s", err)
+				}
+
+				if !strings.Contains(err.Error(), testCase.expectedError.Error()) {
+					t.Fatalf("expected error %q, got: %s", testCase.expectedError, err)
+				}
+			}
+
+			if err == nil && testCase.expectedError != nil {
+				t.Fatalf("got no error, tfType: %s", testCase.expectedError)
+			}
 
 			if diff := cmp.Diff(got, testCase.expected); diff != "" {
 				t.Errorf("unexpected difference: %s", diff)
@@ -301,16 +317,16 @@ func TestValueToTerraformValue(t *testing.T) {
 	}
 }
 
-func TestValueType(t *testing.T) {
+func TestRFC3339Type(t *testing.T) {
 	t.Parallel()
 
 	testCases := map[string]struct {
-		value    rfc3339type.Value
+		value    timetypes.RFC3339
 		expected attr.Type
 	}{
 		"any": {
-			value:    rfc3339type.NullValue(),
-			expected: rfc3339type.Type{},
+			value:    timetypes.NullRFC3339(),
+			expected: timetypes.RFC3339Type{},
 		},
 	}
 

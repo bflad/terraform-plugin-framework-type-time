@@ -1,4 +1,4 @@
-package rfc3339type
+package timetypes
 
 import (
 	"context"
@@ -14,40 +14,40 @@ import (
 
 // Ensure implementation satisfies expected interfaces.
 var (
-	_ tftypes.AttributePathStepper = Type{}
-	_ attr.Type                    = Type{}
-	_ xattr.TypeWithValidate       = Type{}
+	_ tftypes.AttributePathStepper = RFC3339Type{}
+	_ attr.Type                    = RFC3339Type{}
+	_ xattr.TypeWithValidate       = RFC3339Type{}
 )
 
-// Type implements the attr.Type interface for usage in schema definitions
+// RFC3339Type implements the attr.Type interface for usage in schema definitions
 // and data models.
-type Type struct{}
+type RFC3339Type struct{}
 
 // ApplyTerraform5AttributePathStep always returns an error as this type
 // cannot be walked any further.
-func (t Type) ApplyTerraform5AttributePathStep(step tftypes.AttributePathStep) (any, error) {
+func (t RFC3339Type) ApplyTerraform5AttributePathStep(step tftypes.AttributePathStep) (any, error) {
 	return nil, fmt.Errorf("cannot apply AttributePathStep %T to %s", step, t.String())
 }
 
 // Equal returns true if the given type is Type.
-func (t Type) Equal(o attr.Type) bool {
-	_, ok := o.(Type)
+func (t RFC3339Type) Equal(o attr.Type) bool {
+	_, ok := o.(RFC3339Type)
 
 	return ok
 }
 
 // String returns a human readable string of the type.
-func (t Type) String() string {
-	return "rfc3339type.Type"
+func (t RFC3339Type) String() string {
+	return "timetypes.RFC3339Type"
 }
 
 // TerraformType always returns tftypes.String.
-func (t Type) TerraformType(_ context.Context) tftypes.Type {
+func (t RFC3339Type) TerraformType(_ context.Context) tftypes.Type {
 	return tftypes.String
 }
 
 // Validate ensures the value is always RFC 3339 conformant.
-func (t Type) Validate(_ context.Context, terraformValue tftypes.Value, schemaPath path.Path) diag.Diagnostics {
+func (t RFC3339Type) Validate(_ context.Context, terraformValue tftypes.Value, schemaPath path.Path) diag.Diagnostics {
 	if terraformValue.IsNull() || !terraformValue.IsKnown() {
 		return nil
 	}
@@ -68,19 +68,19 @@ func (t Type) Validate(_ context.Context, terraformValue tftypes.Value, schemaPa
 		}
 	}
 
-	_, diags := StringValue(str, schemaPath)
+	_, diags := RFC3339String(str, schemaPath)
 
 	return diags
 }
 
 // ValueFromTerraform converts the tftypes.Value into a value.
-func (t Type) ValueFromTerraform(_ context.Context, terraformValue tftypes.Value) (attr.Value, error) {
+func (t RFC3339Type) ValueFromTerraform(_ context.Context, terraformValue tftypes.Value) (attr.Value, error) {
 	if terraformValue.IsNull() {
-		return NullValue(), nil
+		return NullRFC3339(), nil
 	}
 
 	if !terraformValue.IsKnown() {
-		return UnknownValue(), nil
+		return UnknownRFC3339(), nil
 	}
 
 	var str string
@@ -88,14 +88,19 @@ func (t Type) ValueFromTerraform(_ context.Context, terraformValue tftypes.Value
 	err := terraformValue.As(&str)
 
 	if err != nil {
-		return UnknownValue(), err
+		return UnknownRFC3339(), err
 	}
 
 	strTime, err := time.Parse(time.RFC3339, str)
 
 	if err != nil {
-		return UnknownValue(), err
+		return UnknownRFC3339(), err
 	}
 
-	return TimeValue(strTime), nil
+	return RFC3339Time(strTime), nil
+}
+
+// ValueType returns the associated attr.Value.
+func (t RFC3339Type) ValueType(_ context.Context) attr.Value {
+	return RFC3339{}
 }

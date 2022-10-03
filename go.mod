@@ -1,4 +1,4 @@
-module github.com/bflad/terraform-plugin-framework-type-rfc3339
+module github.com/bflad/terraform-plugin-framework-type-time
 
 go 1.18
 

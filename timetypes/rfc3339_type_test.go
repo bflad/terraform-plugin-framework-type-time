@@ -1,4 +1,4 @@
-package rfc3339type_test
+package timetypes_test
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/bflad/terraform-plugin-framework-type-rfc3339/rfc3339type"
+	"github.com/bflad/terraform-plugin-framework-type-time/timetypes"
 	"github.com/google/go-cmp/cmp"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -16,34 +16,34 @@ import (
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 )
 
-func TestTypeApplyTerraform5AttributePathStep(t *testing.T) {
+func TestRFC3339TypeApplyTerraform5AttributePathStep(t *testing.T) {
 	t.Parallel()
 
 	testCases := map[string]struct {
-		typ           rfc3339type.Type
+		typ           timetypes.RFC3339Type
 		step          tftypes.AttributePathStep
 		expected      any
 		expectedError error
 	}{
 		"AttributeName": {
-			typ:           rfc3339type.Type{},
+			typ:           timetypes.RFC3339Type{},
 			step:          tftypes.AttributeName("test"),
-			expectedError: fmt.Errorf("cannot apply AttributePathStep tftypes.AttributeName to rfc3339type.Type"),
+			expectedError: fmt.Errorf("cannot apply AttributePathStep tftypes.AttributeName to timetypes.RFC3339Type"),
 		},
 		"ElementKeyInt": {
-			typ:           rfc3339type.Type{},
+			typ:           timetypes.RFC3339Type{},
 			step:          tftypes.ElementKeyInt(1),
-			expectedError: fmt.Errorf("cannot apply AttributePathStep tftypes.ElementKeyInt to rfc3339type.Type"),
+			expectedError: fmt.Errorf("cannot apply AttributePathStep tftypes.ElementKeyInt to timetypes.RFC3339Type"),
 		},
 		"ElementKeyString": {
-			typ:           rfc3339type.Type{},
+			typ:           timetypes.RFC3339Type{},
 			step:          tftypes.ElementKeyString("test"),
-			expectedError: fmt.Errorf("cannot apply AttributePathStep tftypes.ElementKeyString to rfc3339type.Type"),
+			expectedError: fmt.Errorf("cannot apply AttributePathStep tftypes.ElementKeyString to timetypes.RFC3339Type"),
 		},
 		"ElementKeyValue": {
-			typ:           rfc3339type.Type{},
+			typ:           timetypes.RFC3339Type{},
 			step:          tftypes.ElementKeyValue{},
-			expectedError: fmt.Errorf("cannot apply AttributePathStep tftypes.ElementKeyValue to rfc3339type.Type"),
+			expectedError: fmt.Errorf("cannot apply AttributePathStep tftypes.ElementKeyValue to timetypes.RFC3339Type"),
 		},
 	}
 
@@ -76,26 +76,26 @@ func TestTypeApplyTerraform5AttributePathStep(t *testing.T) {
 	}
 }
 
-func TestTypeEqual(t *testing.T) {
+func TestRFC3339TypeEqual(t *testing.T) {
 	t.Parallel()
 
 	testCases := map[string]struct {
-		typ      rfc3339type.Type
+		typ      timetypes.RFC3339Type
 		other    attr.Type
 		expected bool
 	}{
 		"nil": {
-			typ:      rfc3339type.Type{},
+			typ:      timetypes.RFC3339Type{},
 			other:    nil,
 			expected: false,
 		},
-		"rfc3339type.Type": {
-			typ:      rfc3339type.Type{},
-			other:    rfc3339type.Type{},
+		"timetypes.RFC3339Type": {
+			typ:      timetypes.RFC3339Type{},
+			other:    timetypes.RFC3339Type{},
 			expected: true,
 		},
 		"types.StringType": {
-			typ:      rfc3339type.Type{},
+			typ:      timetypes.RFC3339Type{},
 			other:    types.StringType,
 			expected: false,
 		},
@@ -116,16 +116,16 @@ func TestTypeEqual(t *testing.T) {
 	}
 }
 
-func TestTypeString(t *testing.T) {
+func TestRFC3339TypeString(t *testing.T) {
 	t.Parallel()
 
 	testCases := map[string]struct {
-		typ      rfc3339type.Type
+		typ      timetypes.RFC3339Type
 		expected string
 	}{
 		"any": {
-			typ:      rfc3339type.Type{},
-			expected: "rfc3339type.Type",
+			typ:      timetypes.RFC3339Type{},
+			expected: "timetypes.RFC3339Type",
 		},
 	}
 
@@ -144,15 +144,15 @@ func TestTypeString(t *testing.T) {
 	}
 }
 
-func TestTypeTerraformType(t *testing.T) {
+func TestRFC3339TypeTerraformType(t *testing.T) {
 	t.Parallel()
 
 	testCases := map[string]struct {
-		typ      rfc3339type.Type
+		typ      timetypes.RFC3339Type
 		expected tftypes.Type
 	}{
 		"any": {
-			typ:      rfc3339type.Type{},
+			typ:      timetypes.RFC3339Type{},
 			expected: tftypes.String,
 		},
 	}
@@ -172,17 +172,17 @@ func TestTypeTerraformType(t *testing.T) {
 	}
 }
 
-func TestTypeValidate(t *testing.T) {
+func TestRFC3339TypeValidate(t *testing.T) {
 	t.Parallel()
 
 	testCases := map[string]struct {
-		typ            rfc3339type.Type
+		typ            timetypes.RFC3339Type
 		terraformValue tftypes.Value
 		schemaPath     path.Path
 		expectedDiags  diag.Diagnostics
 	}{
 		"not-string": {
-			typ:            rfc3339type.Type{},
+			typ:            timetypes.RFC3339Type{},
 			terraformValue: tftypes.NewValue(tftypes.Bool, true),
 			schemaPath:     path.Root("test"),
 			expectedDiags: diag.Diagnostics{
@@ -196,17 +196,17 @@ func TestTypeValidate(t *testing.T) {
 			},
 		},
 		"string-null": {
-			typ:            rfc3339type.Type{},
+			typ:            timetypes.RFC3339Type{},
 			terraformValue: tftypes.NewValue(tftypes.String, nil),
 			schemaPath:     path.Root("test"),
 		},
 		"string-unknown": {
-			typ:            rfc3339type.Type{},
+			typ:            timetypes.RFC3339Type{},
 			terraformValue: tftypes.NewValue(tftypes.String, tftypes.UnknownValue),
 			schemaPath:     path.Root("test"),
 		},
 		"string-value-invalid": {
-			typ:            rfc3339type.Type{},
+			typ:            timetypes.RFC3339Type{},
 			terraformValue: tftypes.NewValue(tftypes.String, "not-rfc3339-format"),
 			schemaPath:     path.Root("test"),
 			expectedDiags: diag.Diagnostics{
@@ -220,17 +220,17 @@ func TestTypeValidate(t *testing.T) {
 			},
 		},
 		"string-value-valid-offset-negative": {
-			typ:            rfc3339type.Type{},
+			typ:            timetypes.RFC3339Type{},
 			terraformValue: tftypes.NewValue(tftypes.String, "2006-01-02T15:04:05-07:00"),
 			schemaPath:     path.Root("test"),
 		},
 		"string-value-valid-offset-positive": {
-			typ:            rfc3339type.Type{},
+			typ:            timetypes.RFC3339Type{},
 			terraformValue: tftypes.NewValue(tftypes.String, "2006-01-02T15:04:05+07:00"),
 			schemaPath:     path.Root("test"),
 		},
 		"string-value-valid-z": {
-			typ:            rfc3339type.Type{},
+			typ:            timetypes.RFC3339Type{},
 			terraformValue: tftypes.NewValue(tftypes.String, "2006-01-02T15:04:05Z"),
 			schemaPath:     path.Root("test"),
 		},
@@ -251,51 +251,51 @@ func TestTypeValidate(t *testing.T) {
 	}
 }
 
-func TestTypeValueFromTerraform(t *testing.T) {
+func TestRFC3339TypeValueFromTerraform(t *testing.T) {
 	t.Parallel()
 
 	testCases := map[string]struct {
-		typ            rfc3339type.Type
+		typ            timetypes.RFC3339Type
 		terraformValue tftypes.Value
 		expected       attr.Value
 		expectedError  error
 	}{
 		"not-string": {
-			typ:            rfc3339type.Type{},
+			typ:            timetypes.RFC3339Type{},
 			terraformValue: tftypes.NewValue(tftypes.Bool, true),
-			expected:       rfc3339type.UnknownValue(),
+			expected:       timetypes.UnknownRFC3339(),
 			expectedError:  fmt.Errorf("can't unmarshal tftypes.Bool into *string, expected string"),
 		},
 		"string-null": {
-			typ:            rfc3339type.Type{},
+			typ:            timetypes.RFC3339Type{},
 			terraformValue: tftypes.NewValue(tftypes.String, nil),
-			expected:       rfc3339type.NullValue(),
+			expected:       timetypes.NullRFC3339(),
 		},
 		"string-unknown": {
-			typ:            rfc3339type.Type{},
+			typ:            timetypes.RFC3339Type{},
 			terraformValue: tftypes.NewValue(tftypes.String, tftypes.UnknownValue),
-			expected:       rfc3339type.UnknownValue(),
+			expected:       timetypes.UnknownRFC3339(),
 		},
 		"string-value-invalid": {
-			typ:            rfc3339type.Type{},
+			typ:            timetypes.RFC3339Type{},
 			terraformValue: tftypes.NewValue(tftypes.String, "not-rfc3339-format"),
-			expected:       rfc3339type.UnknownValue(),
+			expected:       timetypes.UnknownRFC3339(),
 			expectedError:  fmt.Errorf("parsing time \"not-rfc3339-format\" as \"2006-01-02T15:04:05Z07:00\": cannot parse \"not-rfc3339-format\" as \"2006\""),
 		},
 		"string-value-valid-offset-negative": {
-			typ:            rfc3339type.Type{},
+			typ:            timetypes.RFC3339Type{},
 			terraformValue: tftypes.NewValue(tftypes.String, "2006-01-02T15:04:05-07:00"),
-			expected:       rfc3339type.TimeValue(time.Date(2006, 1, 2, 15, 4, 5, 0, time.FixedZone("", -7*60*60))),
+			expected:       timetypes.RFC3339Time(time.Date(2006, 1, 2, 15, 4, 5, 0, time.FixedZone("", -7*60*60))),
 		},
 		"string-value-valid-offset-positive": {
-			typ:            rfc3339type.Type{},
+			typ:            timetypes.RFC3339Type{},
 			terraformValue: tftypes.NewValue(tftypes.String, "2006-01-02T15:04:05+07:00"),
-			expected:       rfc3339type.TimeValue(time.Date(2006, 1, 2, 15, 4, 5, 0, time.FixedZone("", 7*60*60))),
+			expected:       timetypes.RFC3339Time(time.Date(2006, 1, 2, 15, 4, 5, 0, time.FixedZone("", 7*60*60))),
 		},
 		"string-value-valid-z": {
-			typ:            rfc3339type.Type{},
+			typ:            timetypes.RFC3339Type{},
 			terraformValue: tftypes.NewValue(tftypes.String, "2006-01-02T15:04:05Z"),
-			expected:       rfc3339type.TimeValue(time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)),
+			expected:       timetypes.RFC3339Time(time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)),
 		},
 	}
 
@@ -320,6 +320,34 @@ func TestTypeValueFromTerraform(t *testing.T) {
 			if err == nil && testCase.expectedError != nil {
 				t.Fatalf("got no error, tfType: %s", testCase.expectedError)
 			}
+
+			if diff := cmp.Diff(got, testCase.expected); diff != "" {
+				t.Errorf("unexpected difference: %s", diff)
+			}
+		})
+	}
+}
+
+func TestRFC3339TypeValueType(t *testing.T) {
+	t.Parallel()
+
+	testCases := map[string]struct {
+		typ      timetypes.RFC3339Type
+		expected attr.Value
+	}{
+		"any": {
+			typ:      timetypes.RFC3339Type{},
+			expected: timetypes.RFC3339{},
+		},
+	}
+
+	for name, testCase := range testCases {
+		name, testCase := name, testCase
+
+		t.Run(name, func(t *testing.T) {
+			t.Parallel()
+
+			got := testCase.typ.ValueType(context.Background())
 
 			if diff := cmp.Diff(got, testCase.expected); diff != "" {
 				t.Errorf("unexpected difference: %s", diff)

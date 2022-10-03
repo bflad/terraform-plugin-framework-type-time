@@ -1,6 +1,6 @@
-# terraform-plugin-framework-type-rfc3339
+# terraform-plugin-framework-type-time
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/bflad/terraform-plugin-framework-type-rfc3339)](https://pkg.go.dev/github.com/bflad/terraform-plugin-framework-type-rfc3339)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/bflad/terraform-plugin-framework-type-time)](https://pkg.go.dev/github.com/bflad/terraform-plugin-framework-type-time)
 
 [RFC 3339](https://tools.ietf.org/html/rfc3339) timestamp string type and value implementations for [terraform-plugin-framework](https://github.com/hashicorp/terraform-plugin-framework). These types automatically include syntax validation and support Go standard library [`time.Time`](https://pkg.go.dev/time#Time) conversion.
 
@@ -16,7 +16,7 @@ This Go module tracks recent versions of `terraform-plugin-framework` for Go ver
 
 ### Schema
 
-Replace usage of `types.StringType` in schema definitions with `rfc3339type.Type{}`.
+Replace usage of `types.StringType` in schema definitions with `timetypes.RFC3339Type{}`.
 
 Given the previous schema attribute:
 
@@ -33,13 +33,13 @@ The updated schema attribute:
 ```go
 tfsdk.Attribute{
     Required: true,
-    Type:     rfc3339type.Type{},
+    Type:     timetypes.RFC3339Type{},
 }
 ```
 
 ### Schema Data Model
 
-Replace usage of `string`, `*string`, or `types.String` in schema data models with `rfc3339type.Value`.
+Replace usage of `string`, `*string`, or `types.String` in schema data models with `timetypes.RFC3339`.
 
 Given the previous schema data model:
 
@@ -55,7 +55,7 @@ The updated schema data model:
 ```go
 type ThingResourceModel struct {
     // ...
-    Example rfc3339type.Value `tfsdk:"example"`
+    Example timetypes.RFC3339 `tfsdk:"example"`
 }
 ```
 
@@ -65,20 +65,20 @@ Similar to other value types, use the `IsNull()` and `IsUnknown()` methods to ch
 
 ### Writing Values
 
-Create a `rfc3339type.Value` by calling one of these functions:
+Create a `timetypes.RFC3339` by calling one of these functions:
 
-- `NullValue() Value`: creates a `null` value.
-- `UnknownValue() Value`: creates an unknown value.
-- `StringValue(string, path.Path) (Value, diag.Diagnostics)`: creates a known value using the given `string` or returns validation errors if `string` is not in the expected RFC 3339 format.
-- `TimeValue(time.Time) Value` creates a known value using the given `time.Time`.
+- `NullRFC3339() RFC3339`: creates a `null` value.
+- `UnknownRFC3339() Value`: creates an unknown value.
+- `RFC3339String(string, path.Path) (Value, diag.Diagnostics)`: creates a known value using the given `string` or returns validation errors if `string` is not in the expected RFC 3339 format.
+- `RFC3339Time(time.Time) Value` creates a known value using the given `time.Time`.
 
 ### Adding the Dependency
 
-All functionality is located in the `github.com/bflad/terraform-plugin-framework-type-rfc3339/rfc3339type` package. Add this to relevant Go file `import` statements.
+All functionality is located in the `github.com/bflad/terraform-plugin-framework-type-time/timetypes` package. Add this to relevant Go file `import` statements.
 
 Run these Go module commands to fetch the latest version and ensure all module files are up to date.
 
 ```shell
-go get github.com/bflad/terraform-plugin-framework-type-rfc3339@latest
+go get github.com/bflad/terraform-plugin-framework-type-time@latest
 go mod tidy
 ```

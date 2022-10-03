@@ -1,4 +1,4 @@
-package rfc3339type
+package timetypes
 
 import (
 	"context"
@@ -12,23 +12,23 @@ import (
 
 // Ensure implementation satisfies expected interfaces.
 var (
-	_ attr.Value = Value{}
+	_ attr.Value = RFC3339{}
 )
 
-// NullValue returns a null Value.
-func NullValue() Value {
-	return Value{
+// NullRFC3339 returns a null Value.
+func NullRFC3339() RFC3339 {
+	return RFC3339{
 		null: true,
 	}
 }
 
-// StringValue returns a known Value or any errors while attempting
+// RFC3339String returns a known Value or any errors while attempting
 // to parse the string as RFC 3339 format.
-func StringValue(s string, schemaPath path.Path) (Value, diag.Diagnostics) {
+func RFC3339String(s string, schemaPath path.Path) (RFC3339, diag.Diagnostics) {
 	t, err := time.Parse(time.RFC3339, s)
 
 	if err != nil {
-		return Value{
+		return RFC3339{
 				unknown: true,
 			}, diag.Diagnostics{
 				diag.NewAttributeErrorDiagnostic(
@@ -41,27 +41,27 @@ func StringValue(s string, schemaPath path.Path) (Value, diag.Diagnostics) {
 			}
 	}
 
-	return Value{
+	return RFC3339{
 		value: t,
 	}, nil
 }
 
-// TimeValue returns a known Value with the given time.
-func TimeValue(t time.Time) Value {
-	return Value{
+// RFC3339Time returns a known Value with the given time.
+func RFC3339Time(t time.Time) RFC3339 {
+	return RFC3339{
 		value: t,
 	}
 }
 
-// UnknownValue returns an unknown Value.
-func UnknownValue() Value {
-	return Value{
+// UnknownRFC3339 returns an unknown Value.
+func UnknownRFC3339() RFC3339 {
+	return RFC3339{
 		unknown: true,
 	}
 }
 
-// Value implements the attr.Value interface for usage in logic.
-type Value struct {
+// RFC3339 implements the attr.Value interface for usage in logic.
+type RFC3339 struct {
 	null    bool
 	unknown bool
 	value   time.Time
@@ -70,8 +70,8 @@ type Value struct {
 // Equal returns true if the given attr.Value matches the following:
 //   - Is a Value type
 //   - Has the same null, unknown, and value data
-func (v Value) Equal(o attr.Value) bool {
-	otherValue, ok := o.(Value)
+func (v RFC3339) Equal(o attr.Value) bool {
+	otherValue, ok := o.(RFC3339)
 
 	if !ok {
 		return false
@@ -89,17 +89,17 @@ func (v Value) Equal(o attr.Value) bool {
 }
 
 // IsNull returns true if the Value represents a null Value.
-func (v Value) IsNull() bool {
+func (v RFC3339) IsNull() bool {
 	return v.null
 }
 
 // IsUnknown returns true if the Value represents an unknown Value.
-func (v Value) IsUnknown() bool {
+func (v RFC3339) IsUnknown() bool {
 	return v.unknown
 }
 
 // String returns a human readable string of the Value.
-func (v Value) String() string {
+func (v RFC3339) String() string {
 	if v.null {
 		return attr.NullValueString
 	}
@@ -112,12 +112,12 @@ func (v Value) String() string {
 }
 
 // Time returns the time.Time of a Value.
-func (v Value) Time() time.Time {
+func (v RFC3339) Time() time.Time {
 	return v.value
 }
 
 // ToTerraformValue converts the Value to a tftypes.String.
-func (v Value) ToTerraformValue(_ context.Context) (tftypes.Value, error) {
+func (v RFC3339) ToTerraformValue(_ context.Context) (tftypes.Value, error) {
 	if v.null {
 		return tftypes.NewValue(tftypes.String, nil), nil
 	}
@@ -130,6 +130,6 @@ func (v Value) ToTerraformValue(_ context.Context) (tftypes.Value, error) {
 }
 
 // Type returns Type.
-func (v Value) Type(_ context.Context) attr.Type {
-	return Type{}
+func (v RFC3339) Type(_ context.Context) attr.Type {
+	return RFC3339Type{}
 }
