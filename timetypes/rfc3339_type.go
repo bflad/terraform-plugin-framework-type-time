@@ -76,11 +76,11 @@ func (t RFC3339Type) Validate(_ context.Context, terraformValue tftypes.Value, s
 // ValueFromTerraform converts the tftypes.Value into a value.
 func (t RFC3339Type) ValueFromTerraform(_ context.Context, terraformValue tftypes.Value) (attr.Value, error) {
 	if terraformValue.IsNull() {
-		return NullRFC3339(), nil
+		return RFC3339Null(), nil
 	}
 
 	if !terraformValue.IsKnown() {
-		return UnknownRFC3339(), nil
+		return RFC3339Unknown(), nil
 	}
 
 	var str string
@@ -88,13 +88,13 @@ func (t RFC3339Type) ValueFromTerraform(_ context.Context, terraformValue tftype
 	err := terraformValue.As(&str)
 
 	if err != nil {
-		return UnknownRFC3339(), err
+		return RFC3339Unknown(), err
 	}
 
 	strTime, err := time.Parse(time.RFC3339, str)
 
 	if err != nil {
-		return UnknownRFC3339(), err
+		return RFC3339Unknown(), err
 	}
 
 	return RFC3339Time(strTime), nil
@@ -102,5 +102,5 @@ func (t RFC3339Type) ValueFromTerraform(_ context.Context, terraformValue tftype
 
 // ValueType returns the associated attr.Value.
 func (t RFC3339Type) ValueType(_ context.Context) attr.Value {
-	return RFC3339{}
+	return RFC3339Value{}
 }

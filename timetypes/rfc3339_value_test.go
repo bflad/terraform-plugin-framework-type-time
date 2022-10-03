@@ -17,12 +17,12 @@ func TestRFC3339Equal(t *testing.T) {
 	t.Parallel()
 
 	testCases := map[string]struct {
-		value    timetypes.RFC3339
+		value    timetypes.RFC3339Value
 		other    attr.Value
 		expected bool
 	}{
 		"nil": {
-			value:    timetypes.NullRFC3339(),
+			value:    timetypes.RFC3339Null(),
 			other:    nil,
 			expected: false,
 		},
@@ -32,43 +32,43 @@ func TestRFC3339Equal(t *testing.T) {
 			expected: false,
 		},
 		"null-null": {
-			value:    timetypes.NullRFC3339(),
-			other:    timetypes.NullRFC3339(),
+			value:    timetypes.RFC3339Null(),
+			other:    timetypes.RFC3339Null(),
 			expected: true,
 		},
 		"null-unknown": {
-			value:    timetypes.NullRFC3339(),
-			other:    timetypes.UnknownRFC3339(),
+			value:    timetypes.RFC3339Null(),
+			other:    timetypes.RFC3339Unknown(),
 			expected: false,
 		},
 		"null-value": {
-			value:    timetypes.NullRFC3339(),
+			value:    timetypes.RFC3339Null(),
 			other:    timetypes.RFC3339Time(time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)),
 			expected: false,
 		},
 		"unknown-null": {
-			value:    timetypes.UnknownRFC3339(),
-			other:    timetypes.NullRFC3339(),
+			value:    timetypes.RFC3339Unknown(),
+			other:    timetypes.RFC3339Null(),
 			expected: false,
 		},
 		"unknown-unknown": {
-			value:    timetypes.UnknownRFC3339(),
-			other:    timetypes.UnknownRFC3339(),
+			value:    timetypes.RFC3339Unknown(),
+			other:    timetypes.RFC3339Unknown(),
 			expected: true,
 		},
 		"unknown-value": {
-			value:    timetypes.UnknownRFC3339(),
+			value:    timetypes.RFC3339Unknown(),
 			other:    timetypes.RFC3339Time(time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)),
 			expected: false,
 		},
 		"value-null": {
 			value:    timetypes.RFC3339Time(time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)),
-			other:    timetypes.NullRFC3339(),
+			other:    timetypes.RFC3339Null(),
 			expected: false,
 		},
 		"value-unknown": {
 			value:    timetypes.RFC3339Time(time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)),
-			other:    timetypes.UnknownRFC3339(),
+			other:    timetypes.RFC3339Unknown(),
 			expected: false,
 		},
 		"value-value-different": {
@@ -102,15 +102,15 @@ func TestRFC3339IsNull(t *testing.T) {
 	t.Parallel()
 
 	testCases := map[string]struct {
-		value    timetypes.RFC3339
+		value    timetypes.RFC3339Value
 		expected bool
 	}{
 		"null": {
-			value:    timetypes.NullRFC3339(),
+			value:    timetypes.RFC3339Null(),
 			expected: true,
 		},
 		"unknown": {
-			value:    timetypes.UnknownRFC3339(),
+			value:    timetypes.RFC3339Unknown(),
 			expected: false,
 		},
 		"value": {
@@ -138,15 +138,15 @@ func TestRFC3339IsUnknown(t *testing.T) {
 	t.Parallel()
 
 	testCases := map[string]struct {
-		value    timetypes.RFC3339
+		value    timetypes.RFC3339Value
 		expected bool
 	}{
 		"null": {
-			value:    timetypes.NullRFC3339(),
+			value:    timetypes.RFC3339Null(),
 			expected: false,
 		},
 		"unknown": {
-			value:    timetypes.UnknownRFC3339(),
+			value:    timetypes.RFC3339Unknown(),
 			expected: true,
 		},
 		"value": {
@@ -174,15 +174,15 @@ func TestRFC3339String(t *testing.T) {
 	t.Parallel()
 
 	testCases := map[string]struct {
-		value    timetypes.RFC3339
+		value    timetypes.RFC3339Value
 		expected string
 	}{
 		"null": {
-			value:    timetypes.NullRFC3339(),
+			value:    timetypes.RFC3339Null(),
 			expected: "<null>",
 		},
 		"unknown": {
-			value:    timetypes.UnknownRFC3339(),
+			value:    timetypes.RFC3339Unknown(),
 			expected: "<unknown>",
 		},
 		"value-offset-negative": {
@@ -218,15 +218,15 @@ func TestRFC3339Time(t *testing.T) {
 	t.Parallel()
 
 	testCases := map[string]struct {
-		value    timetypes.RFC3339
+		value    timetypes.RFC3339Value
 		expected time.Time
 	}{
 		"null": {
-			value:    timetypes.NullRFC3339(),
+			value:    timetypes.RFC3339Null(),
 			expected: time.Date(1, 1, 1, 0, 0, 0, 0, time.UTC),
 		},
 		"unknown": {
-			value:    timetypes.UnknownRFC3339(),
+			value:    timetypes.RFC3339Unknown(),
 			expected: time.Date(1, 1, 1, 0, 0, 0, 0, time.UTC),
 		},
 		"value-offset-negative": {
@@ -262,16 +262,16 @@ func TestRFC3339ToTerraformValue(t *testing.T) {
 	t.Parallel()
 
 	testCases := map[string]struct {
-		value         timetypes.RFC3339
+		value         timetypes.RFC3339Value
 		expected      tftypes.Value
 		expectedError error
 	}{
 		"null": {
-			value:    timetypes.NullRFC3339(),
+			value:    timetypes.RFC3339Null(),
 			expected: tftypes.NewValue(tftypes.String, nil),
 		},
 		"unknown": {
-			value:    timetypes.UnknownRFC3339(),
+			value:    timetypes.RFC3339Unknown(),
 			expected: tftypes.NewValue(tftypes.String, tftypes.UnknownValue),
 		},
 		"value-offset-negative": {
@@ -321,11 +321,11 @@ func TestRFC3339Type(t *testing.T) {
 	t.Parallel()
 
 	testCases := map[string]struct {
-		value    timetypes.RFC3339
+		value    timetypes.RFC3339Value
 		expected attr.Type
 	}{
 		"any": {
-			value:    timetypes.NullRFC3339(),
+			value:    timetypes.RFC3339Null(),
 			expected: timetypes.RFC3339Type{},
 		},
 	}
