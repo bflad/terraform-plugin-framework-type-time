@@ -263,23 +263,23 @@ func TestRFC3339TypeValueFromTerraform(t *testing.T) {
 		"not-string": {
 			typ:            timetypes.RFC3339Type{},
 			terraformValue: tftypes.NewValue(tftypes.Bool, true),
-			expected:       timetypes.UnknownRFC3339(),
+			expected:       timetypes.RFC3339Unknown(),
 			expectedError:  fmt.Errorf("can't unmarshal tftypes.Bool into *string, expected string"),
 		},
 		"string-null": {
 			typ:            timetypes.RFC3339Type{},
 			terraformValue: tftypes.NewValue(tftypes.String, nil),
-			expected:       timetypes.NullRFC3339(),
+			expected:       timetypes.RFC3339Null(),
 		},
 		"string-unknown": {
 			typ:            timetypes.RFC3339Type{},
 			terraformValue: tftypes.NewValue(tftypes.String, tftypes.UnknownValue),
-			expected:       timetypes.UnknownRFC3339(),
+			expected:       timetypes.RFC3339Unknown(),
 		},
 		"string-value-invalid": {
 			typ:            timetypes.RFC3339Type{},
 			terraformValue: tftypes.NewValue(tftypes.String, "not-rfc3339-format"),
-			expected:       timetypes.UnknownRFC3339(),
+			expected:       timetypes.RFC3339Unknown(),
 			expectedError:  fmt.Errorf("parsing time \"not-rfc3339-format\" as \"2006-01-02T15:04:05Z07:00\": cannot parse \"not-rfc3339-format\" as \"2006\""),
 		},
 		"string-value-valid-offset-negative": {
@@ -337,7 +337,7 @@ func TestRFC3339TypeValueType(t *testing.T) {
 	}{
 		"any": {
 			typ:      timetypes.RFC3339Type{},
-			expected: timetypes.RFC3339{},
+			expected: timetypes.RFC3339Value{},
 		},
 	}
 
