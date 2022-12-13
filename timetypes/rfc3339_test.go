@@ -28,7 +28,7 @@ func TestRFC3339Equal(t *testing.T) {
 		},
 		"not-timetypes.RFC3339": {
 			value:    timetypes.RFC3339Time(time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)),
-			other:    types.String{Value: "2006-01-02T15:04:05Z"},
+			other:    types.StringValue("2006-01-02T15:04:05Z"),
 			expected: false,
 		},
 		"null-null": {
